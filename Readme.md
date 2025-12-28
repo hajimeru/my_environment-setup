@@ -466,7 +466,7 @@ ftp_proxy       = http://127.0.0.1:7890
 ca_certificate  = D:\scoop\apps\cacert\current\cacert.pem
 ```
 
-# 七、Windows WSL2 安装
+# 八、Windows WSL2 安装
 ```PowerShell
 #先打开安装WSL2的必要设置
 #启用Windows子系统Linux功能
@@ -484,6 +484,14 @@ Invoke-WebRequest -Uri https://wslstorestorage.blob.core.windows.net/wslblob/Ubu
 #下载完成后将后缀改为zip解压
 #解压后继续将x64.appx改为zip再解压
 #运行最后解压得到的Unbuntu.exe
+```
+# 九、Conda安装
+```PowerShell
+scoop install extras/miniconda3
+
+#利用scoop安装的conda的环境是自动设置在scoop安装目录的
+#无需更改env的安装目录
+
 ```
 
 
