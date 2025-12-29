@@ -1,12 +1,12 @@
 # 使用 Scoop 搭建 Windows 统一开发环境
 
 
-## 一、科学上网第一步
+## 科学上网第一步
 
 * 下载安装 [Clash for Windows 汉化版](https://github.com/ender-zhao/Clash-for-Windows_Chinese/releases)
 
 
-## 二、Scoop 安装及配置
+## Scoop 安装及配置
 
 * Scoop 官网: https://scoop.sh/
 
@@ -97,7 +97,7 @@ scoop checkup       # 检查潜在的问题
 ```
 
 
-## 三、安装常用软件
+## 安装常用软件
 
 ### 1) 安装 VSCode
 
@@ -134,10 +134,15 @@ scoop install draw.io         # 画图神器
 scoop install everything      # 文件搜索神器
 scoop install gridea          # 一个小而美的静态博客写作客户端
 scoop install switchhosts     # 管理、切换多个 hosts 方案的工具
+
+#利用scoop安装的conda的环境是自动设置在scoop安装目录的
+#无需更改env的安装目录
+scoop install miniconda3      # python版本管理工具
+
 ```
 
 
-## 四、Node 开发环境安装及配置
+## Node 开发环境安装及配置
 
 * [Node.js](https://nodejs.org/zh-cn/) : 是一个基于 Chrome V8 引擎 的 JavaScript 运行时环境
 * [npm](https://www.npmjs.com/) : Node 包管理工具 (Node.js自带)
@@ -224,100 +229,7 @@ volta list yarn
 volta list rimraf
 ```
 
-
-## 五、OpenResty 开发环境相关
-
-### 1) 安装 OpenResty
-
-```PowerShell
-# 安装 openresty (32位)
-scoop install openresty -a 32bit
-
-# 如果需要运行 resty 等命令需要安装 perl
-# scoop install perl
-```
-
-### 2) 安装 MinGW
-
-```PowerShell
-# 安装 mingw (32位)
-scoop install mingw -a 32bit
-# 编译 clib 需要用到 mingw32-gcc, mingw32-make
-```
-
-### 3) 安装 LuaRocks
-
-```PowerShell
-# 安装 luarocks (32位)
-scoop install luarocks -a 32bit -i
-# 使用 -i 参数可避免安装 lua 依赖
-```
-
-### 4) 修改 LuaRocks 配置文件
-
-```PowerShell
-# 打开 config.lua 配置文件
-subl D:\scoop\apps\luarocks\current\config.lua
-# 将以下代码复制到该文件并保存
-```
-
-```lua
--- luarocks config.lua 配置文件
-
--- 使用国内镜像
-rocks_servers = {
-    "https://luarocks.cn",
-}
-
--- 使用代理
-proxy = "http://127.0.0.1:7890"
-
-local openresty = "D:/scoop/apps/openresty/current/"
-local mingw_bin = "D:/scoop/apps/mingw/current/bin/"
-
--- 安装路径
-rocks_trees = {
-    {
-        root    = openresty,
-        bin_dir = openresty .. "bin",
-        lib_dir = openresty .. "clib",
-        lua_dir = openresty .. "lua",
-    },
-}
-
--- 使用 openresty 提供的 luajit
-lua_interpreter = "luajit.exe"
-lua_version     = "5.1"
-verbose         = false
-
-variables = {
-    LUA_BINDIR  = openresty,
-    LUA_DIR     = openresty,
-    LUALIB      = 'lua51.dll',
-    MSVCRT      = 'm',   -- make MinGW use MSVCRT.DLL as runtime
-    MAKE        = mingw_bin .. "make.exe",
-    CC          = mingw_bin .. "gcc.exe",
-    LD          = mingw_bin .. "gcc.exe",
-    RC          = mingw_bin .. "windres.exe",
-    AR          = mingw_bin .. "ar.exe",
-    RANLIB      = mingw_bin .. "ranlib.exe",
-}
-```
-
-### 5) 使用 LuaRocks 安装 clib
-
-```PowerShell
-# 如果下载安装包失败, 可删除缓存目录再试:
-# ~\AppData\Local\LuaRocks\Cache
-
-luarocks install LuaFileSystem
-luarocks install LuaSocket
-luarocks install utf8
-luarocks install hashids
-```
-
-
-## 六、代码管理工具及托管
+## 代码管理工具及托管
 
 * Git https://git-scm.com/
 * TortoiseGit https://tortoisegit.org/
@@ -385,7 +297,7 @@ PreferredAuthentications publickey
 IdentityFile ~/.ssh/gitee_id_rsa
 ```
 
-## 七、其它配置
+## 其它配置
 
 ### 1) 安装 ColorTool 并设置 PowerShell 配色方案
 
@@ -466,7 +378,7 @@ ftp_proxy       = http://127.0.0.1:7890
 ca_certificate  = D:\scoop\apps\cacert\current\cacert.pem
 ```
 
-# 八、Windows WSL2 安装
+## Windows WSL2 安装
 ```PowerShell
 #先打开安装WSL2的必要设置
 #启用Windows子系统Linux功能
@@ -485,14 +397,44 @@ Invoke-WebRequest -Uri https://wslstorestorage.blob.core.windows.net/wslblob/Ubu
 #解压后继续将x64.appx改为zip再解压
 #运行最后解压得到的Unbuntu.exe
 ```
-# 九、Conda安装
-```PowerShell
-scoop install extras/miniconda3
 
-#利用scoop安装的conda的环境是自动设置在scoop安装目录的
-#无需更改env的安装目录
+## 汇总一下所有软件的安装
+
+```powershell
+
+Name         Version      Source 
+----         -------      ------ 
+7zip         25.01        main   
+aria2        1.37.0-1     main   
+blender      5.0.1        extras 
+cacert       2025-12-02   main   
+ccat         1.1.0        main   
+cmake        4.2.1        main   
+curl         8.17.0_6     main   
+curlie       1.8.2        main   
+emscripten   4.0.22       main   
+everything   1.4.1.1030   extras 
+git          2.52.0       main   
+grep         3.11         main   
+innounp      2.66.1       main   
+jpegview     1.0.37       extras 
+less         685          main   
+miniconda3   25.11.1-1    extras 
+nodejs       25.2.1       main   
+pnpm         10.26.2      main   
+potplayer    250909       extras 
+sed          4.9          main   
+sublime-text 4-4200       extras 
+sudo         0.2020.01.26 main   
+touch        0.2018.07.25 main   
+vcpkg        2025.12.12   main   
+vscode       1.107.1      extras 
+wget         1.21.4       main   
+which        2.20         main   
+wox          1.3.524      extras 
 
 ```
+
 
 
 ## 参考文章
